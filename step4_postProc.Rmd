@@ -1,0 +1,44 @@
+---
+title: "Zebra SCR post processing"
+output: html_notebook
+date: 2022-07-14
+---
+
+```{r setup workspace}
+library(MCMCvis)
+library(abind)
+library(scrbook)
+library(here)
+
+load(here('output/sqDist150Out.RData'))
+load('spacing150.RData')
+X.rsc <- zebData[[5]]
+```
+
+
+```{r summarise output}
+MCMCsummary(out, params = c('beta0', 'beta1', 'N', 'psi', 'sigma'), round = 2)
+MCMCtrace(out, params = c('beta0', 'beta1', 'N', 'psi', 'sigma'),
+          pdf = F, ind = T, Rhat = T, n.eff = T)
+```
+
+```{r GOF assessment}
+## test for spatial randomness
+# create s as an n.iter x M x 2 array -- for NIMBLE output
+#out.cols <- colnames(out)
+#s.cols <- as.vector(out.cols[grep('^s\\[', as.character(out.cols))])
+#sx.cols <- as.vector(s.cols[grep('1\\]$', as.character(s.cols))])
+#sy.cols <- as.vector(s.cols[grep('2\\]$', as.character(s.cols))])
+#s.ary <- abind(out[,sx.cols], out[,sy.cols], along = 3)
+
+# vector of w/z's
+#w.cols <- as.vector(out.cols[grep('^w\\[', as.character(out.cols))])
+
+# for JAGS output
+GOFout <- list(s = out$sims.list$s, w = out$sims.list$w)
+SCRgof(GOFout, 11, 10, traplocs = X.rsc[,,10], buffer = 0)
+
+## test for fit of individual encounter frequencies
+# calculate p-values
+mean(out$sims.list$T1new > out$sims.list$T1obs)
+```
