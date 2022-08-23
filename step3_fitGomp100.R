@@ -1,23 +1,31 @@
 # TENR Zebra SCR analysis - Process data for grid analysis from search path
-# Set for parallel running on cluster
+# Set for parallel running on cluster (which isn't working)
 
 ## set up workspace
-library(jagsUI)
+library(nimble)
 
 # load data
 load('spacing100.RData')
-my.data <- c(zebData[[1]], zebData[[2]])
-my.inits <- function(){zebData[[3]]}
-my.params <- zebData[[4]]
+my.data <- zebData[[1]]
+my.const <- zebData[[2]]
+
+s.init <- zebData[[3]]
+w.init <- zebData[[4]]
+my.inits <- list(beta0 = runif(1, -1, 2),
+                 beta1 = runif(1, 4, 8),
+                 lsigma = runif(1, 0.5, 1.5),
+                 s = s.init, w = w.init)
+
+my.params <- zebData[[5]]
 
 ## model specification in BUGS
-cat('
-model{
+
+my.code <- nimbleCode({
 
 # Priors
-beta0 ~ dunif(-25, 25) #beta0 ~ dunif(-5, 5)
-beta1 ~ dunif(0, 25) #beta1 ~ dunif(4, 10)
-lsigma ~ dunif(-5, 5)
+beta0 ~ dunif(-1, 2)
+beta1 ~ dunif(4, 8)
+lsigma ~ dunif(0.5, 1.5)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
 psi ~ dunif(0, 1)
@@ -58,19 +66,21 @@ for(i in 1:M){ # Loop over individuals
 N <- sum(w[])
 T1obs <- sum(err.t2[])
 T1new <- sum(errnew.t2[])
-}
-', file = 'modelGomp.txt')
+})
 
 # MCMC settings
 nc <- 3
-ni <- 15000
-nb <- 5000
-nt <- 10
+ni <- 100#00
+nb <- #5000
+nt <- 1#0
 
 (start.time <- Sys.time())
-out <- jags(data = my.data, inits = my.inits, parameters.to.save = my.params,
-            n.iter = ni, n.burnin = nb, n.thin = nt, n.chains = nc,
-            model.file = 'modelGomp.txt', parallel = T)
+out <- nimbleMCMC(code = my.code, data = my.data, constants = my.const,
+                  inits = my.inits, monitors = my.params,
+                  thin = nt, niter = ni, nburnin = nb, nchains = nc,
+                  dimensions = list(mu2 = c(my.const$M, my.const$K, my.const$J),
+                                    ynew = c(my.const$M, my.const$K),
+                                    err.t2 = my.const$M, errnew.t2 = my.const$M))
 (end.time <- Sys.time())
 print(difftime(end.time, start.time, units = 'hours'), 3)
 
