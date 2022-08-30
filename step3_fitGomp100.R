@@ -70,9 +70,9 @@ T1new <- sum(errnew.t2[])
 
 # MCMC settings
 nc <- 3
-ni <- 100#00
-nb <- #5000
-nt <- 1#0
+ni <- 10000
+nb <- 5000
+nt <- 10
 
 (start.time <- Sys.time())
 out <- nimbleMCMC(code = my.code, data = my.data, constants = my.const,

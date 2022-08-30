@@ -6,9 +6,17 @@ library(jagsUI)
 
 # load data
 load('spacing125.RData')
-my.data <- c(zebData[[1]], zebData[[2]])
-my.inits <- function(){zebData[[3]]}
-my.params <- zebData[[4]]
+my.data <- zebData[[1]]
+my.const <- zebData[[2]]
+
+s.init <- zebData[[3]]
+w.init <- zebData[[4]]
+my.inits <- function{list(beta0 = runif(1, -1, 2),
+                 beta1 = runif(1, 4, 8),
+                 lsigma = runif(1, 0.5, 1.5),
+                 s = s.init, w = w.init)}
+
+my.params <- zebData[[5]]
 
 ## model specification in BUGS
 cat('
@@ -63,7 +71,7 @@ T1new <- sum(errnew.t2[])
 
 # MCMC settings
 nc <- 3
-ni <- 15000
+ni <- 10000
 nb <- 5000
 nt <- 10
 
