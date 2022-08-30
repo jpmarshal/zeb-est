@@ -6,8 +6,7 @@ library(jagsUI)
 
 # load data
 load('spacing125.RData')
-my.data <- zebData[[1]]
-my.const <- zebData[[2]]
+my.data <- c(zebData[[1]], zebData[[2]])
 
 s.init <- zebData[[3]]
 w.init <- zebData[[4]]
