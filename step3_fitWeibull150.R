@@ -11,9 +11,9 @@ my.data <- c(zebData[[1]], zebData[[2]])
 s.init <- zebData[[3]]
 w.init <- zebData[[4]]
 my.inits <- function(){list(beta0 = runif(1, 4, 10),
-                            beta1 = runif(1, 0, 5),
+                            beta1 = runif(1, 0.01, 5),
                             lsigma = runif(1, -1, 0.5),
-                            s = s.init, w = rep(1, my.data$M))}
+                            s = s.init, w = w.init)}
 
 my.params <- zebData[[5]]
 
@@ -23,7 +23,7 @@ model{
 
 # Priors
 beta0 ~ dunif(4, 10)
-beta1 ~ dunif(0, 5)
+beta1 ~ dunif(0.01, 5)
 lsigma ~ dunif(-1, 0.5)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
@@ -70,9 +70,9 @@ T1new <- sum(errnew.t2[])
 
 # MCMC settings
 nc <- 3
-ni <- 15#000
-nb <- 5#000
-nt <- 1#0
+ni <- 10000
+nb <- 5000
+nt <- 10
 
 (start.time <- Sys.time())
 out <- jags(data = my.data, inits = my.inits, parameters.to.save = my.params,
