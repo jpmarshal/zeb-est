@@ -13,7 +13,7 @@ w.init <- zebData[[4]]
 my.inits <- function(){list(beta0 = runif(1, 4, 10),
                             beta1 = runif(1, 0, 5),
                             lsigma = runif(1, -1, 0.5),
-                            s = s.init, w = w.init)}
+                            s = s.init, w = rep(1, my.data$M))}
 
 my.params <- zebData[[5]]
 
