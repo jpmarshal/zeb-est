@@ -7,8 +7,15 @@ library(jagsUI)
 # load data
 load('spacing150.RData')
 my.data <- c(zebData[[1]], zebData[[2]])
-my.inits <- function(){zebData[[3]]}
-my.params <- zebData[[4]]
+
+s.init <- zebData[[3]]
+w.init <- zebData[[4]]
+my.inits <- function(){list(beta0 = runif(1, -1, 5),
+                            beta1 = runif(1, 4, 25),
+                            lsigma = runif(1, -1, 0.5),
+                            s = s.init, w = w.init)}
+
+my.params <- zebData[[5]]
 
 ## model specification in BUGS
 cat('
