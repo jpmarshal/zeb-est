@@ -22,9 +22,9 @@ cat('
 model{
 
 # Priors
-beta0 ~ dunif(-25, 25) #beta0 ~ dunif(-5, 5)
-beta1 ~ dunif(0, 25) #beta1 ~ dunif(4, 10)
-lsigma ~ dunif(-5, 5)
+beta0 ~ dunif(-1, 2)
+beta1 ~ dunif(4, 8)
+lsigma ~ dunif(0.5, 1.5)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
 psi ~ dunif(0, 1)
