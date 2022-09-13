@@ -183,7 +183,8 @@ my.inits <- list(beta0 = runif(1, -1, 5),
 # parameters to be estimated
 #my.params <- c('beta1', 'N', 'psi', 'sigma', 'beta0',
 #            'X1obs', 'X1new', 'X2obs', 'X2new')
-my.params <- c('beta0', 'beta1', 'N', 'psi', 'sigma', 's', 'w', 'T1obs', 'T1new')
+my.params <- c('beta0', 'beta1', 'N', 'psi', 'lsigma',
+               'sigma', 's', 'w', 'T1obs', 'T1new')
 
 zebData <- list(my.data, my.const, s.init, w.init, my.params, X.rsc)
 save(zebData, file = 'spacing150.RData', version = 2)

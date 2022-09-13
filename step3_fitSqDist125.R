@@ -12,11 +12,12 @@ my.data <- c(zebData[[1]], zebData[[2]])
 s.init <- zebData[[3]]
 w.init <- zebData[[4]]
 my.inits <- function(){list(beta0 = runif(1, 0, 2),
-                            beta1 = runif(1, 4, 8),
+                            beta1 = runif(1, 4, 10),
                             lsigma = runif(1, 0.5, 1),
                             s = s.init, w = w.init)}
 
-my.params <- zebData[[5]]
+my.params <- c('beta0', 'beta1', 'N', 'psi', 'lsigma',
+               'sigma', 's', 'w', 'T1obs', 'T1new')
 
 ## model specification in BUGS
 cat('
@@ -24,7 +25,7 @@ model{
 
 # Priors
 beta0 ~ dunif(0, 2)
-beta1 ~ dunif(4, 8)
+beta1 ~ dunif(4, 10)
 lsigma ~ dunif(0.5, 1)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
