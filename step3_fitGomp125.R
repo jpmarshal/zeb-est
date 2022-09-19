@@ -12,7 +12,7 @@ s.init <- zebData[[3]]
 w.init <- zebData[[4]]
 my.inits <- function(){list(beta0 = runif(1, -2, 2),
                             beta1 = runif(1, 4, 10),
-                            lsigma = runif(1, 0.1, 2),
+                            lsigma = runif(1, 0.01, 2),
                             s = s.init, w = w.init)}
 
 my.params <- c('beta0', 'beta1', 'N', 'psi', 'lsigma',
@@ -25,7 +25,7 @@ model{
 # Priors
 beta0 ~ dunif(-2, 2)
 beta1 ~ dunif(4, 10)
-lsigma ~ dunif(0.1, 2)
+lsigma ~ dunif(0.01, 2)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
 psi ~ dunif(0, 1)
@@ -40,7 +40,7 @@ for(i in 1:M){ # Loop over individuals
     v[i,k] ~ dnorm(s[i,2], tau)
     for(j in 1:J){ # Loop over each point defining line segments
       d[i,k,j] <- pow(pow(u[i,k] - X[j,1,k], 2) + pow(v[i,k] - X[j,2,k], 2), 0.5)
-      h[i,k,j] <- exp(-beta0 - beta1*d[i,k,j]) # Gompertz
+      log(h[i,k,j]) <- -beta0 - beta1*d[i,k,j] # Gompertz
       #h[i,k,j] <- exp(beta0 - beta1*d[i,k,j]*d[i,k,j]) # SqDist
       #h[i,k,j] <- exp(-log(1 - expit(beta0)*exp(beta1*pow(d[i,k,j]), 2))) # NormKern
       #h[i,k,j] <- exp(beta0 + beta1*log(d[i,k,j])) # Weibull
