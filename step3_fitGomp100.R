@@ -71,7 +71,7 @@ T1new <- sum(errnew.t2[])
 
 # MCMC settings
 nc <- 3
-ni <- 10000
+ni <- 15000
 nb <- 5000
 nt <- 10
 
