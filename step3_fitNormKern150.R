@@ -37,7 +37,7 @@ for(i in 1:M){ # Loop over individuals
       d[i,k,j] <- pow(pow(u[i,k] - X[j,1,k], 2) + pow(v[i,k] - X[j,2,k], 2), 0.5)
       #h[i,k,j] <- exp(-beta0 - beta1*d[i,k,j]) # Gompertz
       #h[i,k,j] <- exp(-beta0 - beta1*d[i,k,j]*d[i,k,j]) # SqDist
-      h[i,k,j] <- exp(-log(1 - (exp(beta0)/(1+exp(beta0)))*exp(beta1*pow(d[i,k,j]), 2))) # NormKern
+      log(h[i,k,j]) <- -log(1 - (exp(beta0)/(1+exp(beta0)))*exp(beta1*pow(d[i,k,j]), 2)) # NormKern
       #h[i,k,j] <- exp(beta0 + beta1*log(d[i,k,j])) # Weibull
 
       # Bayesian p-value

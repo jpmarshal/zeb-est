@@ -42,7 +42,7 @@ for(i in 1:M){ # Loop over individuals
     for(j in 1:J){ # Loop over each point defining line segments
       d[i,k,j] <- pow(pow(u[i,k] - X[j,1,k], 2) + pow(v[i,k] - X[j,2,k], 2), 0.5)
       #h[i,k,j] <- exp(-beta0 - beta1*d[i,k,j]) # Gompertz
-      h[i,k,j] <- exp(-beta0 - beta1*d[i,k,j]*d[i,k,j]) # SqDist
+      log(h[i,k,j]) <- -beta0 - beta1*d[i,k,j]*d[i,k,j] # SqDist
       #h[i,k,j] <- exp(-log(1 - expit(beta0)*exp(beta1*pow(d[i,k,j]), 2))) # NormKern
       #h[i,k,j] <- exp(beta0 + beta1*log(d[i,k,j])) # Weibull
 
