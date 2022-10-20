@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=stampede
+#SBATCH --partition=batch
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --time=72:00:00
