@@ -12,8 +12,8 @@ my.data <- c(zebData[[1]], zebData[[2]])
 s.init <- zebData[[3]]
 w.init <- zebData[[4]]
 my.inits <- function(){list(beta0 = runif(1, 0, 2),
-                            beta1 = runif(1, 4, 10),
-                            lsigma = runif(1, 0.5, 1),
+                            beta1 = runif(1, 9, 15),
+                            lsigma = runif(1, -2, 2),
                             s = s.init, w = w.init)}
 
 my.params <- c('beta0', 'beta1', 'N', 'psi', 'lsigma',
@@ -25,8 +25,8 @@ model{
 
 # Priors
 beta0 ~ dunif(0, 2)
-beta1 ~ dunif(4, 10)
-lsigma ~ dunif(0.5, 1)
+beta1 ~ dunif(9, 15)
+lsigma ~ dunif(-2, 2)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
 psi ~ dunif(0, 1)
@@ -37,8 +37,8 @@ for(i in 1:M){ # Loop over individuals
   s[i,1] ~ dunif(Xl, Xu)
   s[i,2] ~ dunif(Yl, Yu)
   for(k in 1:K){ # Loop over temporal replicates
-    u[i,k] ~ dnorm(s[i,1], tau)
-    v[i,k] ~ dnorm(s[i,2], tau)
+    u[i,k] ~ dnorm(s[i,1], tau)T(0,)
+    v[i,k] ~ dnorm(s[i,2], tau)T(0,)
     for(j in 1:J){ # Loop over each point defining line segments
       d[i,k,j] <- pow(pow(u[i,k] - X[j,1,k], 2) + pow(v[i,k] - X[j,2,k], 2), 0.5)
       #h[i,k,j] <- exp(-beta0 - beta1*d[i,k,j]) # Gompertz

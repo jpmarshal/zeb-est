@@ -10,7 +10,7 @@ library(abind)
 library(scrbook)
 library(here)
 
-load(here('output/gomp100Out.RData'))
+load(here('output/sqDist100Out.RData'))
 load('spacing100.RData')
 X.rsc <- zebData[[5]]
 ```
