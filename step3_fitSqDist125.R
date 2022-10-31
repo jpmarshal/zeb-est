@@ -11,8 +11,8 @@ my.data <- c(zebData[[1]], zebData[[2]])
 
 s.init <- zebData[[3]]
 w.init <- zebData[[4]]
-my.inits <- function(){list(beta0 = runif(1, 0, 2),
-                            beta1 = runif(1, 9, 15),
+my.inits <- function(){list(beta0 = runif(1, -2, 2),
+                            beta1 = runif(1, 4, 15),
                             lsigma = runif(1, -2, 2),
                             s = s.init, w = w.init)}
 
@@ -24,8 +24,8 @@ cat('
 model{
 
 # Priors
-beta0 ~ dunif(0, 2)
-beta1 ~ dunif(9, 15)
+beta0 ~ dunif(-2, 2)
+beta1 ~ dunif(4, 15)
 lsigma ~ dunif(-2, 2)
 sigma <- exp(lsigma)
 tau <- 1/(sigma*sigma)
